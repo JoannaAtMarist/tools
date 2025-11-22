@@ -48,8 +48,4 @@ const IGNORE_DIR_NAMES = [
   "uploads",
   "logs"
 ];
-```
 
-## 📄 License
-
-MIT

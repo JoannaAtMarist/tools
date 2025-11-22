@@ -37,8 +37,4 @@ const IGNORED = new Set([
   "dist",
   "build"
 ]);
-```
 
-## 🧩 License
-
-MIT
