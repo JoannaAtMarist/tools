@@ -182,4 +182,7 @@ desktop.ini
 vite.config.js
 package-lock.json
 package.json
-.identifier
+
+# Annoying  
+*.:Zone.Identifier
+*:Zone.Identifier
