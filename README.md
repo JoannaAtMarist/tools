@@ -35,7 +35,18 @@ An interactive, repo-agnostic CLI that flattens large folder structures into a s
 📄 See: `README-exporter-cli.md`
 
 ---
+## 📝 3. GitHub Issue Import Tool
 
+**Files:** `minimal_import_issues.py, minimal_import.sh`  
+A lightweight CSV-based tool for bulk-creating GitHub Issues.
+- Accepts a simple title,body CSV
+- Supports dry-run previews
+- No labels or assignees required — intentionally minimal
+- Perfect for sprint planning and onboarding large bug lists
+
+📄 See: `README_issue_import_tool.md`  
+
+---  
 
 ## 📄 License
 

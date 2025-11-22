@@ -1,0 +1,6 @@
+title,body
+"Create basic login page","Implement a simple login.html with username/password fields. No styling required yet."
+"Fix home page redirect","Users with an active session should be sent to /home instead of /."
+"Add logout route","Add GET /logout that destroys the session and redirects to /login."
+"Set up basic folder structure","Ensure /server and /client exist with placeholder files."
+"Add README skeleton","Create top-level README with project purpose and quick-start instructions."
