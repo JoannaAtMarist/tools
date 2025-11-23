@@ -27,6 +27,11 @@ const SAFE_EXTS = [
     ".txt",
     ".html",
     ".css",
+    ".cpp",
+    ".h",
+    ".hpp",
+    ".cc",
+    ".cxx",
 ];
 
 // Folder names to ignore entirely (unless name contains "lego")
@@ -80,8 +85,14 @@ function getCodeFenceLang(filePath) {
             return "css";
         case ".md":
             return "md";
+        case ".cpp":
+        case ".h":
+        case ".hpp":
+        case ".cc":
+        case ".cxx":
+            return "cpp";
         default:
-            return ""; // plain
+            return ""; // plain text
     }
 }
 
