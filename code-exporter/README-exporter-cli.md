@@ -4,6 +4,26 @@ A repo-agnostic Node.js CLI tool for exporting code from any folder into one `.t
 
 ---
 
+## 📦 Dependencies  
+This tool has no external npm packages.  
+
+You only need:   
+**✔ Node.js 18 or higher**  
+(required because the script uses ES module import syntax)  
+Ubuntu install:  
+```  
+sudo apt update  
+sudo apt install -y nodejs npm  
+```  
+
+**✔ Built-in Node modules**  
+(automatically included with Node):  
+- fs  
+- path  
+- readline
+
+That’s it. No npm install needed.  
+
 ## ⭐ Features
 
 - Interactive CLI menu  
@@ -48,4 +68,4 @@ const IGNORE_DIR_NAMES = [
   "uploads",
   "logs"
 ];
-
+```  
