@@ -14,7 +14,7 @@ import readline from "readline";
 // ----- CONFIG -----
 
 // Max folder depth from the chosen root (0 = starting dir)
-const MAX_DEPTH = 3;
+const MAX_DEPTH = 5;
 
 // Only export files with these extensions
 const SAFE_EXTS = [
@@ -27,6 +27,8 @@ const SAFE_EXTS = [
     ".txt",
     ".html",
     ".css",
+    ".yaml",
+    ".yml",
     ".cpp",
     ".h",
     ".hpp",
@@ -85,6 +87,9 @@ function getCodeFenceLang(filePath) {
             return "css";
         case ".md":
             return "md";
+        case ".yaml":
+        case ".yml":
+            return "yaml";
         case ".cpp":
         case ".h":
         case ".hpp":
@@ -92,7 +97,7 @@ function getCodeFenceLang(filePath) {
         case ".cxx":
             return "cpp";
         default:
-            return ""; // plain text
+            return "";
     }
 }
 
