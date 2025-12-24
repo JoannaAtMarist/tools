@@ -14,26 +14,40 @@ import readline from "readline";
 // ----- CONFIG -----
 
 // Max folder depth from the chosen root (0 = starting dir)
-const MAX_DEPTH = 5;
+const MAX_DEPTH = 15;
 
 // Only export files with these extensions
 const SAFE_EXTS = [
-    ".js",
-    ".mjs",
-    ".cjs",
-    ".ts",
-    ".json",
-    ".md",
-    ".txt",
-    ".html",
-    ".css",
-    ".yaml",
-    ".yml",
-    ".cpp",
-    ".h",
-    ".hpp",
-    ".cc",
-    ".cxx",
+    // Web / JS / TS
+    ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx",
+    ".json", ".jsonc",
+
+    // Markup / templates
+    ".html", ".css", ".scss", ".sass", ".less",
+    ".md", ".txt",
+    ".njk", // Nunjucks
+
+    // Data / config (text)
+    ".yaml", ".yml", ".toml", ".ini", ".cfg", ".properties",
+    ".xml",
+
+    // C / C
+    ".c", ".h",
+    ".cpp", ".hpp", ".cc", ".cxx",
+
+    // C# / Java
+    ".cs", ".csx",
+    ".java",
+
+    // SQL
+    ".sql",
+
+    // Common scripts
+    ".sh", ".bash", ".zsh",
+    ".ps1",
+
+    // Build / tooling
+    ".cmake", ".mk",
 ];
 
 // Folder names to ignore entirely (unless name contains "lego")
@@ -60,6 +74,8 @@ let skippedUnsupportedFiles = [];
 // ----- HELPERS -----
 
 function isSafeExt(filePath) {
+    const base = path.basename(filePath).toLowerCase();
+    if (SAFE_FILENAMES.has(base)) return true;
     const ext = path.extname(filePath).toLowerCase();
     return SAFE_EXTS.includes(ext);
 }
@@ -77,31 +93,68 @@ function getCodeFenceLang(filePath) {
         case ".js":
         case ".mjs":
         case ".cjs":
-        case ".ts":
             return "js";
+        case ".ts":
+            return "ts";
+        case ".tsx":
+            return "tsx";
+        case ".jsx":
+            return "jsx";
         case ".json":
+        case ".jsonc":
             return "json";
         case ".html":
             return "html";
         case ".css":
+        case ".scss":
+        case ".sass":
+        case ".less":
             return "css";
         case ".md":
             return "md";
         case ".yaml":
         case ".yml":
             return "yaml";
+        case ".toml":
+            return "toml";
+        case ".xml":
+            return "xml";
+        case ".njk":
+            return "njk";
+        case ".sql":
+            return "sql";
+        case ".cs":
+        case ".csx":
+            return "csharp";
+        case ".java":
+            return "java";
+        case ".c":
+            return "c";
         case ".cpp":
         case ".h":
         case ".hpp":
         case ".cc":
         case ".cxx":
             return "cpp";
+        case ".sh":
+        case ".bash":
+        case ".zsh":
+            return "bash";
+        case ".ps1":
+            return "powershell";
         default:
             return "";
     }
 }
 
-// Recursive walker with depth + ignore control
+// Extensionless-but-important code/build files
+const SAFE_FILENAMES = new Set([
+    "cmakelists.txt", // (case-insensitive check below)
+    "makefile",
+    "dockerfile",
+]);
+
+// Recursive walker with depth & ignore control
 function walkDirectory(rootDir, currentDir, depth = 0, collectedFiles = []) {
     const entries = fs.readdirSync(currentDir);
 
@@ -139,7 +192,7 @@ function buildTxtOutput(rootDir, filePaths) {
     let output = "";
 
     if (skippedDepthFolders.length > 0) {
-        output += "===== Skipped Folders (Exceeded Depth 3) =====\n";
+        output += "===== Skipped Folders (Exceeded Depth ${MAX_DEPTH}) =====\n";
         for (const folder of skippedDepthFolders) {
             output += `[SKIPPED FOLDER]: ${folder}\n`;
         }
@@ -180,7 +233,7 @@ function buildMarkdownOutput(rootDir, filePaths) {
     let output = "# Export Report\n\n";
 
     if (skippedDepthFolders.length > 0) {
-        output += "## Skipped Folders (Exceeded Depth 3)\n";
+        output += "## Skipped Folders (Exceeded Depth ${MAX_DEPTH})\n";
         for (const folder of skippedDepthFolders) {
             output += `- \`${folder}\`\n`;
         }
