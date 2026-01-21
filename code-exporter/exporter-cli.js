@@ -50,7 +50,7 @@ const SAFE_EXTS = [
     ".cmake", ".mk",
 ];
 
-// Folder names to ignore entirely (unless name contains "lego")
+// Folder names to ignore entirely
 const IGNORE_DIR_NAMES = [
     "node_modules",
     ".git",
@@ -63,6 +63,11 @@ const IGNORE_DIR_NAMES = [
     "uploads",
     "logs",
     "tmp",
+    "temp",
+    "SFML-2.6.2",
+    ".temp-storage-area",
+    "Labs",
+    "private",
 ];
 
 // ----- STATE -----
