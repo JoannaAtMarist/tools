@@ -6,6 +6,10 @@ import path from "path";
 import fs from "fs";
 import { exportFolder } from "./exporter-core.js";
 
+// these two lines disable GPU
+app.disableHardwareAcceleration();
+app.commandLine.appendSwitch("disable-gpu");
+
 let win;
 
 function createWindow() {
@@ -13,7 +17,7 @@ function createWindow() {
         width: 860,
         height: 720,
         webPreferences: {
-            preload: path.join(app.getAppPath(), "preload.js"),
+            preload: path.join(app.getAppPath(), "preload.cjs"),
             contextIsolation: true,
             nodeIntegration: false,
         },

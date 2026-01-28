@@ -1,7 +1,7 @@
-// preload.js
+// preload.cjs
 // safe bridge to renderer
 
-import { contextBridge, ipcRenderer } from "electron";
+const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("api", {
     pickFolder: () => ipcRenderer.invoke("pick-folder"),
