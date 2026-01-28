@@ -31,7 +31,11 @@ const SAFE_EXTS = [
     ".yaml", ".yml", ".toml", ".ini", ".cfg", ".properties",
     ".xml",
 
-    // C / C
+    // Python
+    ".py", ".pyi",
+    ".ipynb",
+
+    // C / C++
     ".c", ".h",
     ".cpp", ".hpp", ".cc", ".cxx",
 
@@ -44,13 +48,42 @@ const SAFE_EXTS = [
 
     // Common scripts
     ".sh", ".bash", ".zsh",
-    ".ps1",
+    ".ps1", ".bat", ".cmd",
 
     // Build / tooling
     ".cmake", ".mk",
+
+    // Other common languages
+    ".rb",        // Ruby
+    ".go",        // Go
+    ".rs",        // Rust
+    ".php",       // PHP
+    ".kt", ".kts",// Kotlin / Gradle Kotlin DSL
+    ".swift",     // Swift
+    ".dart",      // Dart
+    ".lua",       // Lua
+    ".r",         // R
+    ".scala",     // Scala
+    ".pl", ".pm", // Perl
+    ".groovy",    // Groovy
+    ".gradle",    // Gradle
+    ".proto",     // Protobuf
+    ".graphql", ".gql", // GraphQL
+
+    ".dockerignore",
+    ".gitmodules",
+
+    ".in", // CMake configure_file templates (e.g., foo.hpp.in)
+
+    ".hpp", ".hh", ".ipp",  // more C++ headers
+    ".mm", ".m",            // Objective-C / Obj-C++
+
+    ".vue",                 // Vue single-file components
+    ".svelte",              // Svelte
+
 ];
 
-// Folder names to ignore entirely
+// Folder names to ignore entirely (normalize once)
 const IGNORE_DIR_NAMES = [
     "node_modules",
     ".git",
@@ -68,7 +101,7 @@ const IGNORE_DIR_NAMES = [
     ".temp-storage-area",
     "Labs",
     "private",
-];
+].map((d) => d.toLowerCase());
 
 // ----- STATE -----
 
@@ -78,6 +111,13 @@ let skippedUnsupportedFiles = [];
 
 // ----- HELPERS -----
 
+function shouldIgnoreDir(dirName) {
+    const lower = dirName.toLowerCase();
+    // never ignore legos folders
+    if (lower.includes("lego")) return false;
+    return IGNORE_DIR_NAMES.includes(lower);
+}
+
 function isSafeExt(filePath) {
     const base = path.basename(filePath).toLowerCase();
     if (SAFE_FILENAMES.has(base)) return true;
@@ -85,11 +125,6 @@ function isSafeExt(filePath) {
     return SAFE_EXTS.includes(ext);
 }
 
-function shouldIgnoreDir(dirName) {
-    const lower = dirName.toLowerCase();
-    if (lower.includes("lego")) return false; // never ignore legos folders
-    return IGNORE_DIR_NAMES.includes(dirName);
-}
 
 // Map extension -> markdown code fence language
 function getCodeFenceLang(filePath) {
@@ -98,9 +133,12 @@ function getCodeFenceLang(filePath) {
         case ".js":
         case ".mjs":
         case ".cjs":
-            return "js";
+            return "javascript";
         case ".ts":
-            return "ts";
+            return "typescript";
+        case ".md":
+            return "markdown";
+
         case ".tsx":
             return "tsx";
         case ".jsx":
@@ -115,8 +153,7 @@ function getCodeFenceLang(filePath) {
         case ".sass":
         case ".less":
             return "css";
-        case ".md":
-            return "md";
+
         case ".yaml":
         case ".yml":
             return "yaml";
@@ -147,6 +184,70 @@ function getCodeFenceLang(filePath) {
             return "bash";
         case ".ps1":
             return "powershell";
+
+        case ".py":
+        case ".pyi":
+            return "python";
+        case ".ipynb":
+            return "json"; // notebooks are JSON; keeps it readable
+
+        case ".rb":
+            return "ruby";
+        case ".go":
+            return "go";
+        case ".rs":
+            return "rust";
+        case ".php":
+            return "php";
+        case ".kt":
+        case ".kts":
+            return "kotlin";
+        case ".swift":
+            return "swift";
+        case ".dart":
+            return "dart";
+        case ".lua":
+            return "lua";
+        case ".r":
+            return "r";
+        case ".scala":
+            return "scala";
+        case ".pl":
+        case ".pm":
+            return "perl";
+        case ".groovy":
+        case ".gradle":
+            return "groovy";
+        case ".proto":
+            return "proto";
+        case ".graphql":
+        case ".gql":
+            return "graphql";
+
+        case ".bat":
+        case ".cmd":
+            return "bat";
+
+        case ".dockerignore":
+            return "docker";
+        case ".gitmodules":
+            return "gitconfig"; // closest common highlighter
+        case ".in":
+            return ""; // template file, depends on content
+
+        case ".hh":
+        case ".ipp":
+            return "cpp";
+        case ".m":
+            return "objectivec";
+        case ".mm":
+            return "objectivecpp";
+
+        case ".vue":
+            return "vue";
+        case ".svelte":
+            return "svelte";
+
         default:
             return "";
     }
@@ -154,9 +255,23 @@ function getCodeFenceLang(filePath) {
 
 // Extensionless-but-important code/build files
 const SAFE_FILENAMES = new Set([
-    "cmakelists.txt", // (case-insensitive check below)
+    "cmakelists.txt",
     "makefile",
     "dockerfile",
+
+    ".gitignore",
+    ".gitattributes",
+    ".editorconfig",
+
+    ".env.example",
+    ".npmrc",
+    ".nvmrc",
+    ".prettierrc",
+    ".eslintrc",
+    ".eslintignore",
+    ".prettierignore",
+    "license",
+    "readme", // if someone has README without extension
 ]);
 
 // Recursive walker with depth & ignore control
@@ -197,7 +312,7 @@ function buildTxtOutput(rootDir, filePaths) {
     let output = "";
 
     if (skippedDepthFolders.length > 0) {
-        output += "===== Skipped Folders (Exceeded Depth ${MAX_DEPTH}) =====\n";
+        output += `===== Skipped Folders (Exceeded Depth ${MAX_DEPTH}) =====\n`;
         for (const folder of skippedDepthFolders) {
             output += `[SKIPPED FOLDER]: ${folder}\n`;
         }
@@ -238,7 +353,7 @@ function buildMarkdownOutput(rootDir, filePaths) {
     let output = "# Export Report\n\n";
 
     if (skippedDepthFolders.length > 0) {
-        output += "## Skipped Folders (Exceeded Depth ${MAX_DEPTH})\n";
+        output += `## Skipped Folders (Exceeded Depth ${MAX_DEPTH})\n`;
         for (const folder of skippedDepthFolders) {
             output += `- \`${folder}\`\n`;
         }
