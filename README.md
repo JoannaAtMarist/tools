@@ -1,61 +1,53 @@
 # Developer Utilities Collection
 
-A collection of small, lightweight development tools written for general project maintenance, documentation, and code review workflows.  
-These scripts are designed to work in **any repository**, with no dependencies beyond Node.js.
+A small collection of repo-agnostic developer tools for documentation, code review, and project planning workflows.
 
-This repo currently includes:
-
----
-
-## 📁 1. Project Structure Lister  
-**File:** `list-structure.js`  
-A simple tool that walks the directory tree and outputs a clean, readable text file showing the full folder structure.
-
-- Recursively prints directories  
-- Skips clutter like `node_modules`, `.git`, `dist`, etc.  
-- Generates `project-structure.txt`  
-- Great for documentation and project onboarding  
-
-📄 See: `README-structure-lister.md`
+Each tool is kept in its own folder with its own README so you can copy a tool into any repo without dragging the rest along.
 
 ---
 
-## 🚀 2. Code Exporter CLI  
-**File:** `exporter-cli.js`  
-An interactive, repo-agnostic CLI that flattens large folder structures into a single readable `.txt` or `.md` file.
 
-- Interactive menu  
-- Depth-limited export (3 levels)  
-- Skips binary files (PDF, PNG, DOCX, etc.)  
-- Whitelist for safe code files  
-- Ignores junk folders automatically  
-- Outputs Markdown or plain text  
-- Perfect for code reviews or ChatGPT uploads  
+## Included Tools
 
-📄 See: `README-exporter-cli.md`
+### 1) Project Structure Lister
+**Folder:** `structure-lister/`
+
+Generates a clean, text-based tree view of a project directory (similar to the `tree` command) while skipping common clutter folders.
+
+- Output: `project-structure.txt`
+- Good for onboarding docs and “what’s in this repo?” context
+
+Docs: `structure-lister/README-structure-lister.md`
 
 ---
-## 📝 3. GitHub Issue Import Tool
 
-**Files:** `minimal_import_issues.py, minimal_import.sh`  
-A lightweight CSV-based tool for bulk-creating GitHub Issues.
-- Accepts a simple title,body CSV
-- Supports dry-run previews
-- No labels or assignees required — intentionally minimal
-- Perfect for sprint planning and onboarding large bug lists
+### 2) Code Exporter (CLI + Desktop App)
+**Folder:** `code-exporter/`
 
-📄 See: `README_issue_import_tool.md`  
+Exports code from a chosen folder into a single `.txt` or `.md` file (skips binary/unsupported files, ignores junk folders, and reports what it skipped).
 
----  
+Includes:
+- **CLI version** (Node script)
+- **Electron desktop app** with “Browse folder” + “Save as…”
 
-## 📄 License
+Docs: `code-exporter/README-code-exporter.md`
 
-This project is licensed under:
+---
 
-**Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**  
-You are free to use, modify, and share these utilities for personal or educational purposes.  
+### 3) GitHub Issue Import Tool
+**Folder:** `issue-importer/`
+
+Bulk-creates GitHub Issues from a simple CSV (`title,body`) using GitHub CLI.
+
+Docs: `issue-importer/README_issue_import_tool.md`
+
+---
+
+## License
+
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+
+You are free to use, modify, and share these utilities for personal or educational purposes.
 Commercial use is not permitted.
 
-See the `LICENSE` file for full details.
-
----
+See `LICENSE` for details.
