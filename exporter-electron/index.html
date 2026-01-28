@@ -1,0 +1,88 @@
+<!-- index.html -->
+<!-- creates the UI -->
+
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Repo Exporter</title>
+    <style>
+        body {
+            font-family: system-ui, Arial;
+            margin: 20px;
+        }
+
+        .row {
+            margin: 12px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+        }
+
+        button {
+            padding: 10px 14px;
+        }
+
+        select {
+            padding: 8px;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 12px;
+            overflow: auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Repo Exporter</h2>
+
+    <div class="row">
+        <button id="browseBtn">Browse folder...</button>
+    </div>
+
+    <div class="row">
+        <label>Selected folder</label>
+        <input id="folderPath" type="text" readonly />
+    </div>
+
+    <div class="row grid">
+        <div>
+            <label>Format</label><br />
+            <select id="format">
+                <option value="md">Markdown (.md)</option>
+                <option value="txt">Text (.txt)</option>
+            </select>
+        </div>
+        <div>
+            <label>Output file</label><br />
+            <button id="saveAsBtn">Save as...</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <label>Save path</label>
+        <input id="savePath" type="text" readonly />
+    </div>
+
+    <div class="row">
+        <button id="exportBtn">Export</button>
+    </div>
+
+    <h3>Status</h3>
+    <pre id="status">Ready.</pre>
+
+    <script src="renderer.js"></script>
+</body>
+
+</html>
