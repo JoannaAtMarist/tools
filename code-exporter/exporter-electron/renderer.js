@@ -29,9 +29,15 @@ browseBtn.addEventListener("click", async () => {
 });
 
 formatEl.addEventListener("change", () => {
-    // If the user already picked a save path, you can leave it alone.
-    // Or you could clear it to encourage re-picking with the new extension:
-    // savePathEl.value = "";
+    const folderPath = folderPathEl.value;
+    if (!folderPath) return;
+
+    const baseName = folderPath.split(/[\\/]/).filter(Boolean).pop() || "export";
+    const ext = formatEl.value === "md" ? ".md" : ".txt";
+    const suggested = `${baseName}-export${ext}`;
+
+    setStatus(`Format changed. Suggested output name: ${suggested}\n(Click "Save as..." to pick a new path)`);
+    savePathEl.value = ""; // forces you to re-pick so extension stays consistent
 });
 
 saveAsBtn.addEventListener("click", async () => {
@@ -56,6 +62,9 @@ exportBtn.addEventListener("click", async () => {
         setStatus("Exporting...\n");
         const result = await window.api.runExport({ folderPath, format, savePath });
 
+        lastSavePath = result.savePath;
+        openOutBtn.disabled = false;
+
         setStatus(
             `Done!\n` +
             `Files included: ${result.filesIncluded}\n` +
@@ -67,4 +76,13 @@ exportBtn.addEventListener("click", async () => {
     } catch (err) {
         setStatus(`Error: ${err.message || String(err)}`);
     }
+});
+
+const openOutBtn = document.getElementById("openOutBtn");
+
+let lastSavePath = "";
+
+openOutBtn.addEventListener("click", async () => {
+    if (!lastSavePath) return;
+    await window.api.openOutputFolder(lastSavePath);
 });

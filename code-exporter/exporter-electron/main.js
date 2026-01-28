@@ -5,6 +5,13 @@ import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import path from "path";
 import fs from "fs";
 import { exportFolder } from "./exporter-core.js";
+import { shell } from "electron";
+
+ipcMain.handle("open-output-folder", async (_event, { savePath }) => {
+    if (!savePath) return false;
+    await shell.showItemInFolder(savePath);
+    return true;
+});
 
 // these two lines disable GPU
 app.disableHardwareAcceleration();
