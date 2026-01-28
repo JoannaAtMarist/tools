@@ -6,6 +6,7 @@ Each tool is kept in its own folder with its own README so you can copy a tool i
 
 ---
 
+<br>
 
 ## Included Tools
 
@@ -41,7 +42,13 @@ Bulk-creates GitHub Issues from a simple CSV (`title,body`) using GitHub CLI.
 
 Docs: `issue-importer/README_issue_import_tool.md`
 
+### 4.) Excel Combiner (Python)  
+**Folder:** `excel-combiner/`  
+Combines multiple .xlsx files into one workbook, one sheet per file.
+
 ---
+
+<br>
 
 ## License
 
