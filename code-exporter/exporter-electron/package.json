@@ -4,9 +4,36 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "devDependencies": {
-    "electron": "^latest"
+    "electron": "^39.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.joanna.repoexporter",
+    "productName": "Repo Exporter",
+    "files": [
+      "main.js",
+      "preload.cjs",
+      "renderer.js",
+      "index.html",
+      "exporter-core.js",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    }
   }
 }
