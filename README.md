@@ -50,6 +50,24 @@ Combines multiple .xlsx files into one workbook, one sheet per file.
 
 ---
 
+### X) OpCode Excel <-> Instruction Bytes Tool
+**Folder:** `excel-to-instruction/`  
+
+Converts between:
+- an Excel `.xlsx` sheet with a required `Byte` column (one hex byte per row), and
+- a plain text `.txt` byte stream (one byte per line)
+
+Includes:
+- **Excel -> TXT** for generating instruction byte files
+- **Batch mode** (`--all`) to convert every `.xlsx` in a `files/` folder
+- **TXT -> Excel** for round-tripping a byte stream back into a spreadsheet for editing/annotation
+
+Output files are written to `output/`.
+
+Docs: `excel-to-instruction/README.md`
+
+---  
+
 <br>
 
 ## License
