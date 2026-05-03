@@ -81,6 +81,13 @@ const SAFE_EXTS = [
     ".vue",                 // Vue single-file components
     ".svelte",              // Svelte
 
+    // Godot
+    ".gd",       // GDScript files
+    ".tscn",     // Scene files, text-based
+    ".tres",     // Resource files, text-based
+    ".godot",    // project.godot config file
+    ".import",   // Godot import metadata
+    ".uid",      // Godot UID metadata
 ];
 
 // Folder names to ignore entirely (normalize once)
@@ -247,6 +254,16 @@ function getCodeFenceLang(filePath) {
             return "vue";
         case ".svelte":
             return "svelte";
+
+        // Godot
+        case ".gd":
+            return "gdscript";
+        case ".tscn":
+        case ".tres":
+        case ".godot":
+        case ".import":
+        case ".uid":
+            return "ini";
 
         default:
             return "";
